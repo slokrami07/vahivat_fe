@@ -1,6 +1,9 @@
 import * as React from "react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { usePerspective } from "@/context/PerspectiveContext"
+import { LanguageToggle } from "@/components/LanguageToggle"
+import { VoiceSearch } from "@/components/VoiceSearch"
 import { Bell, Search, UserCircle, LogOut, Settings, User, Check, Trash2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -14,11 +17,13 @@ const initialNotifications = [
 
 export function Header() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { perspective, logout } = usePerspective()
   
   const [isProfileOpen, setIsProfileOpen] = React.useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false)
   const [notifications, setNotifications] = React.useState(initialNotifications)
+  const [searchQuery, setSearchQuery] = React.useState("")
 
   const profileRef = React.useRef<HTMLDivElement>(null)
   const notifRef = React.useRef<HTMLDivElement>(null)
@@ -48,16 +53,32 @@ export function Header() {
     setNotifications([])
   }
 
+  const handleVoiceResult = (transcript: string) => {
+    setSearchQuery(transcript)
+  }
+
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-100 bg-white/80 backdrop-blur-md px-6 shadow-sm transition-colors duration-200">
       <div className="flex items-center gap-4 flex-1">
         <div className="relative w-full max-w-md hidden md:block">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-charcoal" strokeWidth={1.5} />
-          <Input type="search" placeholder="Search marketplace..." className="pl-9 bg-cream border-none w-full focus-visible:ring-1 focus-visible:ring-terracotta rounded-full text-ink" />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-charcoal" strokeWidth={1.5} />
+          <Input 
+            type="search" 
+            placeholder={t('search.placeholder')} 
+            className="pl-9 pr-12 bg-cream border-none w-full focus-visible:ring-1 focus-visible:ring-terracotta rounded-full text-ink"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <div className="absolute right-1 top-1/2 -translate-y-1/2">
+            <VoiceSearch onResult={handleVoiceResult} />
+          </div>
         </div>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3">
+        
+        {/* Language Toggle */}
+        <LanguageToggle />
         
         {/* Notifications Dropdown */}
         <div className="relative" ref={notifRef}>
@@ -66,7 +87,7 @@ export function Header() {
               setIsNotificationsOpen(!isNotificationsOpen)
               setIsProfileOpen(false)
             }}
-            className="relative text-charcoal hover:text-ink transition-colors p-1"
+            className="relative text-charcoal hover:text-ink transition-colors p-1 min-h-[36px] min-w-[36px] flex items-center justify-center"
           >
             <Bell className="h-5 w-5" strokeWidth={1.5} />
             {unreadCount > 0 && (
@@ -77,13 +98,13 @@ export function Header() {
           {isNotificationsOpen && (
             <div className="absolute right-0 mt-2 w-80 rounded-xl border border-slate-100 bg-white text-ink shadow-lg outline-none animate-in fade-in-0 zoom-in-95 z-50">
               <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
-                <span className="font-semibold text-sm text-ink">Notifications</span>
+                <span className="font-semibold text-sm text-ink">{t('header.notifications')}</span>
                 {notifications.length > 0 && (
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="h-6 w-6 text-charcoal" onClick={markAllAsRead} title="Mark all as read">
+                    <Button variant="ghost" size="icon" className="h-6 w-6 text-charcoal inline-action" onClick={markAllAsRead} title={t('header.mark_all_read')}>
                       <Check className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-6 w-6 text-charcoal" onClick={clearNotifications} title="Clear all">
+                    <Button variant="ghost" size="icon" className="h-6 w-6 text-charcoal inline-action" onClick={clearNotifications} title={t('header.clear_all')}>
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
@@ -92,7 +113,7 @@ export function Header() {
               <div className="max-h-[300px] overflow-y-auto">
                 {notifications.length === 0 ? (
                   <div className="p-6 text-center text-sm text-charcoal">
-                    No new notifications.
+                    {t('header.no_notifications')}
                   </div>
                 ) : (
                   <div className="flex flex-col">
@@ -121,7 +142,7 @@ export function Header() {
               setIsProfileOpen(!isProfileOpen)
               setIsNotificationsOpen(false)
             }}
-            className="flex items-center gap-2 hover:bg-cream p-1 pr-2 rounded-full transition-colors border border-transparent hover:border-slate-200 text-charcoal"
+            className="flex items-center gap-2 hover:bg-cream p-1 pr-2 rounded-full transition-colors border border-transparent hover:border-slate-200 text-charcoal min-h-[36px]"
           >
             <UserCircle className="h-8 w-8 text-charcoal" />
             <span className="text-sm font-medium hidden sm:inline-block">
@@ -145,20 +166,20 @@ export function Header() {
                     setIsProfileOpen(false)
                     navigate('/settings')
                   }}
-                  className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none text-charcoal hover:bg-cream hover:text-ink transition-colors"
+                  className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none text-charcoal hover:bg-cream hover:text-ink transition-colors min-h-[36px]"
                 >
                   <User className="mr-2 h-4 w-4" />
-                  <span>Profile Settings</span>
+                  <span>{t('header.profile_settings')}</span>
                 </button>
                 <button 
                   onClick={() => {
                     setIsProfileOpen(false)
                     navigate('/settings?tab=preferences')
                   }}
-                  className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none text-charcoal hover:bg-cream hover:text-ink transition-colors"
+                  className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none text-charcoal hover:bg-cream hover:text-ink transition-colors min-h-[36px]"
                 >
                   <Settings className="mr-2 h-4 w-4" />
-                  <span>Preferences</span>
+                  <span>{t('header.preferences')}</span>
                 </button>
               </div>
               <div className="p-1">
@@ -167,10 +188,10 @@ export function Header() {
                     setIsProfileOpen(false)
                     logout()
                   }}
-                  className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-cream hover:text-red-600 text-red-500 transition-colors"
+                  className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-cream hover:text-red-600 text-red-500 transition-colors min-h-[36px]"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
+                  <span>{t('header.logout')}</span>
                 </button>
               </div>
             </div>

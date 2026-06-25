@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import { PerspectiveProvider, usePerspective } from "./context/PerspectiveContext"
+import { ToastProvider } from "./components/Toast"
+import { WhatsAppButton } from "./components/WhatsAppButton"
 import { Layout } from "./components/layout/Layout"
 import { Dashboard } from "./pages/Dashboard"
 import { DiscoveryHub } from "./pages/DiscoveryHub"
@@ -37,6 +39,8 @@ function AppRoutes() {
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      {/* WhatsApp support FAB - shown on all pages when logged in */}
+      <WhatsAppButton />
     </Router>
   )
 }
@@ -44,7 +48,9 @@ function AppRoutes() {
 function App() {
   return (
     <PerspectiveProvider>
-      <AppRoutes />
+      <ToastProvider>
+        <AppRoutes />
+      </ToastProvider>
     </PerspectiveProvider>
   )
 }

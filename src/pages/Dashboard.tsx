@@ -1,60 +1,64 @@
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 import { usePerspective } from "@/context/PerspectiveContext"
+import { ProfileCompletionBar } from "@/components/ProfileCompletionBar"
+import { VendorStatus } from "@/components/VendorStatus"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Clock, Users, Activity, CheckCircle2 } from "lucide-react"
 
 export function Dashboard() {
-  const { perspective } = usePerspective()
+  const { perspective, profile, vendorStatus, setVendorStatus } = usePerspective()
+  const { t } = useTranslation()
 
   if (perspective === "buyer") {
     return (
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-fraunces font-bold tracking-tight text-ink">Dashboard Overview</h1>
-          <p className="text-charcoal">Monitor your active requests and incoming vendor proposals.</p>
+          <h1 className="text-3xl font-fraunces font-bold tracking-tight text-ink">{t('dashboard.title')}</h1>
+          <p className="text-charcoal">{t('dashboard.subtitle')}</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           <Card className="relative overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active RFPs</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.active_rfps')}</CardTitle>
               <Activity className="h-4 w-4 text-terracotta" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-terracotta">12</div>
               <p className="text-xs text-charcoal/80 flex items-center gap-1 mt-1">
-                <ArrowUpRight className="h-3 w-3 text-emerald-500" /> <span className="text-emerald-500 font-medium">+2</span> from last month
+                <ArrowUpRight className="h-3 w-3 text-emerald-500" /> <span className="text-emerald-500 font-medium">+2</span> {t('dashboard.from_last_month')}
               </p>
             </CardContent>
           </Card>
           <Card className="relative overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Proposals Received</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.proposals_received')}</CardTitle>
               <FileTextIcon className="h-4 w-4 text-charcoal/60" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-ink">48</div>
-              <p className="text-xs text-charcoal/80 mt-1">14 awaiting review</p>
+              <p className="text-xs text-charcoal/80 mt-1">14 {t('dashboard.awaiting_review')}</p>
             </CardContent>
           </Card>
           <Card className="relative overflow-hidden">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Scheduled Interviews</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.scheduled_interviews')}</CardTitle>
               <Users className="h-4 w-4 text-charcoal/60" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-ink">5</div>
-              <p className="text-xs text-charcoal/80 mt-1">Next: TechNova at 2:00 PM</p>
+              <p className="text-xs text-charcoal/80 mt-1">{t('dashboard.next')} TechNova at 2:00 PM</p>
             </CardContent>
           </Card>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Recent Bids Waiting Approval</CardTitle>
-            <CardDescription>Review the latest submissions from verified vendors.</CardDescription>
+            <CardTitle>{t('dashboard.recent_bids')}</CardTitle>
+            <CardDescription>{t('dashboard.recent_bids_desc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col divide-y divide-slate-100">
@@ -73,7 +77,7 @@ export function Dashboard() {
                     <Badge variant="secondary" className="bg-marigold/20 text-marigold border-none">
                       <Clock className="mr-1 h-3 w-3" /> {bid.status}
                     </Badge>
-                    <Button size="sm" className="bg-white border border-slate-200 text-charcoal hover:bg-cream hover:text-ink">Review</Button>
+                    <Button size="sm" className="bg-white border border-slate-200 text-charcoal hover:bg-cream hover:text-ink">{t('dashboard.review')}</Button>
                   </div>
                 </div>
               ))}
@@ -87,50 +91,57 @@ export function Dashboard() {
   // Vendor View
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-fraunces font-bold tracking-tight text-ink">Vendor Dashboard</h1>
-        <p className="text-charcoal">Track your proposals and discover new opportunities.</p>
+      {/* Profile Completion Bar */}
+      <ProfileCompletionBar profile={profile} />
+
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-fraunces font-bold tracking-tight text-ink">{t('dashboard.vendor_title')}</h1>
+          <p className="text-charcoal">{t('dashboard.vendor_subtitle')}</p>
+        </div>
+        {/* Vendor Status Indicator */}
+        <VendorStatus status={vendorStatus} editable onChange={setVendorStatus} />
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
         <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open Tech Opportunities</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('dashboard.open_opportunities')}</CardTitle>
             <ZapIcon className="h-4 w-4 text-terracotta" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-terracotta">156</div>
             <p className="text-xs text-charcoal/80 flex items-center gap-1 mt-1">
-              <span className="text-terracotta font-medium">12 new</span> matches today
+              <span className="text-terracotta font-medium">12 new</span> {t('dashboard.matches_today')}
             </p>
           </CardContent>
         </Card>
         <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Proposals Submitted</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('dashboard.proposals_submitted')}</CardTitle>
             <FileTextIcon className="h-4 w-4 text-charcoal/60" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-ink">24</div>
-            <p className="text-xs text-charcoal/80 mt-1">3 currently shortlisted</p>
+            <p className="text-xs text-charcoal/80 mt-1">3 {t('dashboard.currently_shortlisted')}</p>
           </CardContent>
         </Card>
         <Card className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Pipeline Value</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('dashboard.pipeline_value')}</CardTitle>
             <DollarSignIcon className="h-4 w-4 text-charcoal/60" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-ink">$1.2M</div>
-            <p className="text-xs text-charcoal/80 mt-1">Active bids in negotiation</p>
+            <p className="text-xs text-charcoal/80 mt-1">{t('dashboard.active_bids')}</p>
           </CardContent>
         </Card>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Current Proposal Statuses</CardTitle>
-          <CardDescription>Updates on your recent bids and active negotiations.</CardDescription>
+          <CardTitle>{t('dashboard.proposal_statuses')}</CardTitle>
+          <CardDescription>{t('dashboard.proposal_statuses_desc')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col divide-y divide-slate-100">
@@ -146,10 +157,10 @@ export function Dashboard() {
                   </div>
                   <div className="flex flex-col gap-1">
                     <span className="font-semibold text-ink">{prop.project}</span>
-                    <span className="text-sm text-charcoal/80">{prop.client} • Submitted {prop.date}</span>
+                    <span className="text-sm text-charcoal/80">{prop.client} • {t('dashboard.submitted')} {prop.date}</span>
                   </div>
                 </div>
-                <Button size="sm" className="bg-white border border-slate-200 text-charcoal hover:bg-cream hover:text-ink">View Details</Button>
+                <Button size="sm" className="bg-white border border-slate-200 text-charcoal hover:bg-cream hover:text-ink">{t('dashboard.view_details')}</Button>
               </div>
             ))}
           </div>

@@ -1,0 +1,29 @@
+{
+  "short_name": "Vahivat",
+  "name": "Vahivat - Premium B2B Commerce Network",
+  "description": "Premium B2B Commerce Network for Gujarat Traders and Businesses.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FCFAF2",
+  "theme_color": "#CE5A3E",
+  "display": "standalone",
+  "orientation": "portrait"
+}

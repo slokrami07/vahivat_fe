@@ -1,183 +1,186 @@
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 import { usePerspective } from "@/context/PerspectiveContext"
-import { Card } from "@/components/ui/card"
+import { DealTimeline } from "@/components/DealTimeline"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Lock, Send, Search, Calendar as CalendarIcon, Phone } from "lucide-react"
+import { Lock, Send, Phone, CalendarDays, Search, MessageSquare } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+const mockConversations = [
+  { id: 1, name: "TechNova Agency", lastMessage: "Looking forward to the Q3 planning session.", time: "2m ago", avatar: "🏢", unread: 2, dealStatus: "negotiating" },
+  { id: 2, name: "CloudScale Partners", lastMessage: "We've sent over the updated pricing breakdown.", time: "1h ago", avatar: "☁️", unread: 0, dealStatus: "quoted" },
+  { id: 3, name: "SysOps Hardware", lastMessage: "Confirmed. Shipping scheduled for next week.", time: "5h ago", avatar: "🖥️", unread: 0, dealStatus: "confirmed" },
+  { id: 4, name: "DataFlow Inc.", lastMessage: "Could you share your API documentation?", time: "1d ago", avatar: "📊", unread: 0, dealStatus: "inquiry" },
+]
+
+const mockMessages = [
+  { id: 1, sender: "them", text: "Hi! Thanks for the introduction. We've reviewed your requirements for the Q3 project.", time: "10:00 AM" },
+  { id: 2, sender: "them", text: "We have extensive experience with the tech stack you need. Our React team has delivered 30+ enterprise projects.", time: "10:02 AM" },
+  { id: 3, sender: "me", text: "Great to hear. Can you share some relevant case studies? Specifically anything in fintech.", time: "10:15 AM" },
+  { id: 4, sender: "them", text: "Absolutely! I'll have those sent over by end of day. We also have a fintech starter template that could accelerate development.", time: "10:18 AM" },
+  { id: 5, sender: "me", text: "Perfect. Let's also schedule a call to discuss the timeline in detail. Does Thursday at 2 PM work?", time: "10:30 AM" },
+  { id: 6, sender: "them", text: "Looking forward to the Q3 planning session.", time: "10:35 AM" },
+]
 
 export function Chat() {
   const { perspective } = usePerspective()
-  const [activeChat, setActiveChat] = React.useState<number | null>(null)
+  const { t } = useTranslation()
+  const [selectedConvo, setSelectedConvo] = React.useState<number | null>(null)
+  const [searchQuery, setSearchQuery] = React.useState("")
+  const [messageInput, setMessageInput] = React.useState("")
+  const chatEndRef = React.useRef<HTMLDivElement>(null)
+  
+  const activeConvo = mockConversations.find(c => c.id === selectedConvo)
 
-  const chats = perspective === "buyer" ? [
-    { id: 1, name: "TechNova Agency", project: "E-Commerce Replatforming", lastMessage: "Yes, we can definitely accommodate that timeline.", time: "10:30 AM", unread: 2, locked: false },
-    { id: 2, name: "CloudScale Partners", project: "AWS Migration", lastMessage: "I've attached the revised SOW for your review.", time: "Yesterday", unread: 0, locked: false },
-    { id: 3, name: "DataFlow Partners", project: "Data Warehouse Setup", lastMessage: "Awaiting proposal approval to unlock chat.", time: "2 days ago", unread: 0, locked: true },
-  ] : [
-    { id: 1, name: "Acme Corp", project: "E-Commerce Replatforming", lastMessage: "Yes, we can definitely accommodate that timeline.", time: "10:30 AM", unread: 0, locked: false },
-    { id: 4, name: "Global Industries", project: "ERP Implementation", lastMessage: "Awaiting proposal approval to unlock chat.", time: "1 week ago", unread: 0, locked: true },
-  ]
+  React.useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [selectedConvo])
 
-  const selectedChat = chats.find(c => c.id === activeChat)
+  const filteredConvos = mockConversations.filter(c =>
+    c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col gap-2 mb-6">
-        <h1 className="text-3xl font-fraunces font-bold tracking-tight text-ink">Real-time Chat</h1>
-        <p className="text-charcoal">Secure communication channel for active negotiations.</p>
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-fraunces font-bold tracking-tight text-ink">{t('chat.title')}</h1>
+        <p className="text-charcoal">{t('chat.subtitle')}</p>
       </div>
 
-      <Card className="flex-1 flex overflow-hidden border-slate-100 bg-white">
-        {/* Chat List - Left Column */}
-        <div className="w-80 flex flex-col border-r border-slate-100 bg-cream/50">
-          <div className="p-4 border-b border-slate-100">
+      <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-0 border border-slate-100 rounded-xl overflow-hidden bg-white shadow-sm" style={{ height: 'calc(100vh - 230px)' }}>
+        {/* Conversation List */}
+        <div className="border-r border-slate-100 flex flex-col">
+          <div className="p-3 border-b border-slate-100">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-charcoal/70" />
-              <Input type="search" placeholder="Search conversations..." className="pl-9 bg-white border-slate-200 focus-visible:ring-terracotta text-ink rounded-full" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-charcoal/60" />
+              <Input 
+                placeholder={t('search.conversations_placeholder')} 
+                className="pl-9 bg-cream border-transparent text-sm focus-visible:ring-terracotta text-ink rounded-full" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
           </div>
           <div className="flex-1 overflow-y-auto">
-            {chats.map((chat) => (
-              <div 
-                key={chat.id} 
-                onClick={() => setActiveChat(chat.id)}
-                className={`p-4 border-b border-slate-100 cursor-pointer transition-colors hover:bg-cream ${activeChat === chat.id ? 'bg-terracotta/5 border-l-4 border-l-terracotta' : 'border-l-4 border-l-transparent'}`}
+            {filteredConvos.map((convo) => (
+              <button
+                key={convo.id}
+                onClick={() => setSelectedConvo(convo.id)}
+                className={cn(
+                  "w-full flex items-center gap-3 p-4 text-left transition-colors border-b border-slate-50",
+                  selectedConvo === convo.id ? "bg-terracotta/5 border-l-4 border-l-terracotta" : "hover:bg-cream"
+                )}
               >
-                <div className="flex justify-between items-start mb-1">
-                  <h3 className="font-semibold text-sm text-ink truncate pr-2">{chat.name}</h3>
-                  <span className="text-xs text-charcoal/70 whitespace-nowrap">{chat.time}</span>
+                <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl flex-shrink-0">
+                  {convo.avatar}
                 </div>
-                <div className="text-xs font-medium text-terracotta mb-1">{chat.project}</div>
-                <div className="flex justify-between items-center gap-2">
-                  <p className="text-sm text-charcoal/80 truncate flex-1">
-                    {chat.locked && <Lock className="inline h-3 w-3 mr-1 mb-0.5" />}
-                    {chat.lastMessage}
-                  </p>
-                  {chat.unread > 0 && (
-                    <span className="bg-terracotta text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                      {chat.unread}
-                    </span>
-                  )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center">
+                    <span className={cn("text-sm font-semibold truncate text-ink", convo.unread > 0 && "text-terracotta")}>{convo.name}</span>
+                    <span className="text-[11px] text-charcoal/60 flex-shrink-0">{convo.time}</span>
+                  </div>
+                  <p className="text-xs text-charcoal/70 truncate mt-0.5">{convo.lastMessage}</p>
                 </div>
-              </div>
+                {convo.unread > 0 && (
+                  <span className="h-5 min-w-[20px] rounded-full bg-terracotta text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                    {convo.unread}
+                  </span>
+                )}
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Chat Window - Right Column */}
-        <div className="flex-1 flex flex-col bg-white">
-          {!selectedChat ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
-              <div className="h-20 w-20 bg-cream rounded-full flex items-center justify-center mb-4">
-                <MessageSquareIcon className="h-10 w-10 text-charcoal" />
-              </div>
-              <h2 className="text-xl font-fraunces font-semibold text-ink mb-2">Select a conversation</h2>
-              <p className="text-charcoal max-w-md">Choose an active conversation from the sidebar to continue negotiating or discussing project details.</p>
-            </div>
-          ) : selectedChat.locked ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-cream/30">
-              <div className="h-24 w-24 bg-white border-4 border-slate-100 rounded-full flex items-center justify-center mb-6 shadow-sm">
-                <Lock className="h-10 w-10 text-charcoal" />
-              </div>
-              <h2 className="text-2xl font-fraunces font-bold tracking-tight text-ink mb-3">Bridge Locked</h2>
-              <p className="text-charcoal max-w-md text-lg leading-relaxed">
-                Chat locks open automatically once a Buyer approves a project bid and initiates an introduction.
-              </p>
-            </div>
-          ) : (
-            <>
-              {/* Active Chat Header */}
-              <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-white">
+        {/* Chat Area */}
+        {selectedConvo ? (
+          <div className="flex flex-col">
+            {/* Chat Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white">
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-9 rounded-full bg-slate-100 flex items-center justify-center text-lg">{activeConvo?.avatar}</div>
                 <div>
-                  <h2 className="font-semibold font-fraunces text-lg text-ink">{selectedChat.name}</h2>
-                  <p className="text-sm text-charcoal/80">{selectedChat.project}</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="gap-2 rounded-full border-slate-200 text-charcoal hover:bg-cream hover:text-ink">
-                    <Phone className="h-4 w-4" /> <span className="hidden sm:inline">Call</span>
-                  </Button>
-                  <Button size="sm" className="gap-2 rounded-full bg-terracotta hover:bg-terracotta/90 text-white">
-                    <CalendarIcon className="h-4 w-4" /> <span className="hidden sm:inline">Schedule Meeting</span>
-                  </Button>
+                  <h3 className="font-semibold text-ink">{activeConvo?.name}</h3>
+                  <span className="text-xs text-emerald-500 font-medium">● Online</span>
                 </div>
               </div>
-
-              {/* Chat Messages */}
-              <div className="flex-1 p-6 overflow-y-auto flex flex-col gap-6">
-                <div className="flex justify-center">
-                  <span className="text-xs text-charcoal bg-cream px-3 py-1 rounded-full">Today</span>
-                </div>
-                
-                <div className="flex gap-4">
-                  <div className="h-10 w-10 rounded-full bg-terracotta/10 flex items-center justify-center shrink-0">
-                    <span className="text-terracotta font-bold">{selectedChat.name.charAt(0)}</span>
-                  </div>
-                  <div className="flex flex-col gap-1 max-w-[80%]">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-sm text-ink">{selectedChat.name}</span>
-                      <span className="text-xs text-charcoal/70">10:25 AM</span>
-                    </div>
-                    <div className="bg-cream text-ink p-3 rounded-2xl rounded-tl-sm text-sm">
-                      Hello! Thanks for reviewing our proposal. We're excited about the possibility of working together on the {selectedChat.project}. Let me know if you have any questions about the timeline or budget breakdown.
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 flex-row-reverse">
-                  <div className="h-10 w-10 rounded-full bg-marigold/20 flex items-center justify-center shrink-0">
-                    <span className="text-marigold font-bold">M</span>
-                  </div>
-                  <div className="flex flex-col gap-1 max-w-[80%] items-end">
-                    <div className="flex items-center gap-2 flex-row-reverse">
-                      <span className="font-semibold text-sm text-ink">You</span>
-                      <span className="text-xs text-charcoal/70">10:28 AM</span>
-                    </div>
-                    <div className="bg-terracotta text-white p-3 rounded-2xl rounded-tr-sm text-sm">
-                      Hi there. Yes, the proposal looks solid. I did have one question regarding the testing phase—can we extend that by one week without impacting the final launch date?
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="h-10 w-10 rounded-full bg-terracotta/10 flex items-center justify-center shrink-0">
-                    <span className="text-terracotta font-bold">{selectedChat.name.charAt(0)}</span>
-                  </div>
-                  <div className="flex flex-col gap-1 max-w-[80%]">
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-sm text-ink">{selectedChat.name}</span>
-                      <span className="text-xs text-charcoal/70">10:30 AM</span>
-                    </div>
-                    <div className="bg-cream text-ink p-3 rounded-2xl rounded-tl-sm text-sm">
-                      Yes, we can definitely accommodate that timeline.
-                    </div>
-                  </div>
-                </div>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="icon" className="text-charcoal hover:text-terracotta hover:bg-terracotta/10 rounded-full"><Phone className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="text-charcoal hover:text-terracotta hover:bg-terracotta/10 rounded-full"><CalendarDays className="h-4 w-4" /></Button>
               </div>
+            </div>
 
-              {/* Message Input */}
-              <div className="p-4 border-t border-slate-100 bg-white">
-                <div className="relative flex items-center">
-                  <Input 
-                    placeholder="Type your message..." 
-                    className="pr-12 py-6 rounded-full bg-cream border-transparent focus-visible:ring-terracotta focus-visible:bg-white text-ink transition-colors" 
-                  />
-                  <Button size="icon" className="absolute right-1 h-10 w-10 rounded-full bg-terracotta hover:bg-terracotta/90 text-white">
-                    <Send className="h-4 w-4 -ml-0.5" />
-                  </Button>
-                </div>
+            {/* Deal Timeline */}
+            {activeConvo && (
+              <div className="px-6 py-3 bg-slate-50 border-b border-slate-100">
+                <DealTimeline currentStatus={activeConvo.dealStatus} />
               </div>
-            </>
-          )}
-        </div>
-      </Card>
+            )}
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-cream/30">
+              <div className="text-center">
+                <span className="text-[10px] font-medium text-charcoal/50 bg-white px-3 py-1 rounded-full border border-slate-100">{t('chat.today')}</span>
+              </div>
+              {mockMessages.map((msg) => (
+                <div key={msg.id} className={cn("flex", msg.sender === "me" ? "justify-end" : "justify-start")}>
+                  <div className={cn(
+                    "max-w-[75%] rounded-2xl px-4 py-3 text-sm",
+                    msg.sender === "me" 
+                      ? "bg-terracotta text-white rounded-br-sm" 
+                      : "bg-white text-ink border border-slate-100 rounded-bl-sm shadow-sm"
+                  )}>
+                    <p className="leading-relaxed">{msg.text}</p>
+                    <p className={cn("text-[10px] mt-1.5", msg.sender === "me" ? "text-white/60" : "text-charcoal/50")}>{msg.time}</p>
+                  </div>
+                </div>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+
+            {/* Message Input */}
+            <div className="p-4 border-t border-slate-100 bg-white">
+              <form onSubmit={(e) => { e.preventDefault(); setMessageInput("") }} className="flex items-center gap-2">
+                <Input 
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  placeholder={t('chat.type_message')}
+                  className="flex-1 bg-cream border-transparent focus-visible:ring-terracotta text-ink rounded-full"
+                />
+                <Button type="submit" size="icon" className="rounded-full bg-terracotta hover:bg-terracotta/90 text-white h-10 w-10">
+                  <Send className="h-4 w-4" />
+                </Button>
+              </form>
+            </div>
+          </div>
+        ) : (
+          /* Empty state */
+          <div className="flex flex-col items-center justify-center bg-cream/30">
+            <div className="text-center space-y-4 max-w-sm px-6">
+              <div className="p-4 rounded-full bg-slate-100 inline-flex">
+                <MessageSquare className="h-8 w-8 text-charcoal/40" />
+              </div>
+              <h3 className="text-lg font-semibold text-ink font-fraunces">{t('chat.select_conversation')}</h3>
+              <p className="text-sm text-charcoal">{t('chat.select_hint')}</p>
+              <Card className="text-left bg-white/80">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3 text-sm">
+                    <Lock className="h-4 w-4 text-terracotta flex-shrink-0" />
+                    <div>
+                      <span className="font-medium text-ink">{t('chat.bridge_locked')}</span>
+                      <p className="text-xs text-charcoal mt-1">{t('chat.bridge_locked_desc')}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
-  )
-}
-
-function MessageSquareIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    </svg>
   )
 }

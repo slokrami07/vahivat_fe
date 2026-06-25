@@ -19,7 +19,7 @@ export function Settings() {
         <p className="text-muted-foreground">Manage your public profile, team access, and notifications.</p>
       </div>
 
-      <Tabs defaultValue={defaultTab} onValueChange={(v) => setSearchParams({ tab: v })} className="w-full">
+      <Tabs value={defaultTab} onValueChange={(v) => setSearchParams({ tab: v })} className="w-full">
         <TabsList className="grid w-full md:w-[400px] grid-cols-2 mb-8">
           <TabsTrigger value="profile">Profile Settings</TabsTrigger>
           <TabsTrigger value="preferences">Preferences</TabsTrigger>

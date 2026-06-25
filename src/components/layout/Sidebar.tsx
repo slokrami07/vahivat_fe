@@ -1,5 +1,6 @@
 import * as React from "react"
 import { NavLink, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { LayoutDashboard, Compass, FileText, CalendarDays, MessageSquare, Zap, PlusCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePerspective } from "@/context/PerspectiveContext"
@@ -7,22 +8,23 @@ import { Button } from "@/components/ui/button"
 
 export function Sidebar() {
   const { perspective } = usePerspective()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const buyerNavItems = [
-    { name: "Dashboard", path: "/", icon: LayoutDashboard },
-    { name: "Discovery Hub", path: "/hub", icon: Compass },
-    { name: "Active RFPs/Bids", path: "/rfps", icon: FileText },
-    { name: "Calendar", path: "/calendar", icon: CalendarDays },
-    { name: "Real-time Chat", path: "/chat", icon: MessageSquare },
+    { name: t('nav.dashboard'), path: "/", icon: LayoutDashboard },
+    { name: t('nav.discovery_hub'), path: "/hub", icon: Compass },
+    { name: t('nav.active_rfps'), path: "/rfps", icon: FileText },
+    { name: t('nav.calendar'), path: "/calendar", icon: CalendarDays },
+    { name: t('nav.chat'), path: "/chat", icon: MessageSquare },
   ]
 
   const vendorNavItems = [
-    { name: "Dashboard", path: "/", icon: LayoutDashboard },
-    { name: "Scan Opportunities", path: "/hub", icon: Compass },
-    { name: "Active Proposals", path: "/rfps", icon: FileText },
-    { name: "Calendar", path: "/calendar", icon: CalendarDays },
-    { name: "Real-time Chat", path: "/chat", icon: MessageSquare },
+    { name: t('nav.dashboard'), path: "/", icon: LayoutDashboard },
+    { name: t('nav.scan_opportunities'), path: "/hub", icon: Compass },
+    { name: t('nav.active_proposals'), path: "/rfps", icon: FileText },
+    { name: t('nav.calendar'), path: "/calendar", icon: CalendarDays },
+    { name: t('nav.chat'), path: "/chat", icon: MessageSquare },
   ]
 
   const navItems = perspective === "buyer" ? buyerNavItems : vendorNavItems
@@ -43,7 +45,7 @@ export function Sidebar() {
               onClick={() => navigate('/create-rfp')}
             >
               <PlusCircle className="h-5 w-5" />
-              Create Requirement
+              {t('nav.create_requirement')}
             </Button>
           </div>
         )}
