@@ -33,7 +33,9 @@ export function Sidebar() {
     <aside className="fixed inset-y-0 left-0 z-40 w-64 border-r border-slate-100 bg-white shadow-sm hidden lg:block transition-colors duration-200">
       <div className="flex h-16 items-center border-b px-6">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-          <span className="font-fraunces text-2xl font-semibold tracking-tight text-ink lowercase">vahivat</span>
+          <span className="font-fraunces text-2xl font-semibold tracking-tight text-ink">
+            vahi<span className="text-terracotta">વટ</span>
+          </span>
         </div>
       </div>
       

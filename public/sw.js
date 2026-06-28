@@ -2,7 +2,7 @@ const CACHE_NAME = 'vahivat-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
-  '/favicon.svg',
+  '/favicon.png',
   '/manifest.json'
 ];
 

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import { usePerspective } from "@/context/PerspectiveContext"
 import { LanguageToggle } from "@/components/LanguageToggle"
 import { VoiceSearch } from "@/components/VoiceSearch"
-import { Bell, Search, UserCircle, LogOut, Settings, User, Check, Trash2 } from "lucide-react"
+import { Bell, Search, UserCircle, LogOut, Settings, User, Check, Trash2, ShieldCheck } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -18,7 +18,7 @@ const initialNotifications = [
 export function Header() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { perspective, logout } = usePerspective()
+  const { perspective, role, user, logout } = usePerspective()
   
   const [isProfileOpen, setIsProfileOpen] = React.useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = React.useState(false)
@@ -146,7 +146,7 @@ export function Header() {
           >
             <UserCircle className="h-8 w-8 text-charcoal" />
             <span className="text-sm font-medium hidden sm:inline-block">
-              {perspective === "buyer" ? "Acme Corp" : "TechNova Agency"}
+              {user?.name || (perspective === "buyer" ? "Acme Corp" : "TechNova Agency")}
             </span>
           </button>
 
@@ -154,12 +154,30 @@ export function Header() {
             <div className="absolute right-0 mt-2 w-56 rounded-md border border-slate-100 bg-white text-ink shadow-md outline-none animate-in fade-in-0 zoom-in-95 z-50">
               <div className="px-4 py-3 border-b border-slate-100">
                 <p className="text-sm font-medium leading-none mb-1 text-ink">
-                  {perspective === "buyer" ? "Acme Corp" : "TechNova Agency"}
+                  {user?.name || (perspective === "buyer" ? "Acme Corp" : "TechNova Agency")}
                 </p>
                 <p className="text-xs leading-none text-charcoal">
-                  {perspective === "buyer" ? "buyer@acmecorp.com" : "vendor@technova.com"}
+                  {user?.email || (perspective === "buyer" ? "buyer@acmecorp.com" : "vendor@technova.com")}
                 </p>
               </div>
+
+              {/* Admin Panel Quick Link */}
+              {(role === "superadmin" || role === "group_admin") && (
+                <div className="p-1 border-b border-slate-100">
+                  <button
+                    onClick={() => {
+                      setIsProfileOpen(false)
+                      navigate(role === "superadmin" ? "/superadmin" : "/admin")
+                    }}
+                    className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm font-semibold outline-none text-terracotta hover:bg-cream transition-colors min-h-[36px]"
+                  >
+                    <ShieldCheck className="mr-2 h-4 w-4" />
+                    <span>
+                      {role === "superadmin" ? "Go to Superadmin" : "Go to Partner Portal"}
+                    </span>
+                  </button>
+                </div>
+              )}
               <div className="p-1 border-b border-slate-100">
                 <button 
                   onClick={() => {

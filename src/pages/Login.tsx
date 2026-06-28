@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { usePerspective } from "@/context/PerspectiveContext"
 import { Input } from "@/components/ui/input"
-import { Building, Briefcase, Eye, EyeOff, ShieldCheck } from "lucide-react"
+import { Building, Briefcase, Eye, EyeOff, ShieldCheck, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function Login() {
@@ -20,15 +20,23 @@ export function Login() {
     }
   }
 
-  const handleQuickLogin = (type: "buyer" | "vendor") => {
+  const handleQuickLogin = (type: "buyer" | "vendor" | "superadmin" | "admin") => {
     if (type === "buyer") {
       setEmail("buyer@acmecorp.com")
       setPassword("demo123")
       login("buyer@acmecorp.com")
-    } else {
+    } else if (type === "vendor") {
       setEmail("vendor@technova.com")
       setPassword("demo123")
       login("vendor@technova.com")
+    } else if (type === "superadmin") {
+      setEmail("superadmin@vahiવટ.com")
+      setPassword("demo123")
+      login("superadmin@vahiવટ.com")
+    } else if (type === "admin") {
+      setEmail("admin@vahiવટ.com")
+      setPassword("demo123")
+      login("admin@vahiવટ.com")
     }
   }
 
@@ -36,19 +44,14 @@ export function Login() {
     <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-6 transition-colors duration-200">
       <div className="w-full max-w-md mb-8 text-center flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="mb-4 flex items-center justify-center">
-          <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-            <path d="M2 4L12 28L18 16L12 4H2Z" fill="url(#login-grad)" opacity="0.8"/>
-            <path d="M30 4L16 28L10 16L18 4H30Z" fill="url(#login-grad)"/>
-            <defs>
-              <linearGradient id="login-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                <stop stopColor="#312E81"/>
-                <stop offset="1" stopColor="#8B5CF6"/>
-              </linearGradient>
-            </defs>
-          </svg>
+          <img src="/logo.png" alt="Vahivat Logo" className="w-20 h-20 object-contain shrink-0" />
         </div>
-        <h1 className="text-3xl font-fraunces font-bold tracking-tight lowercase text-ink">vahivat</h1>
-        <p className="text-charcoal text-sm mt-1">Premium B2B Commerce Network</p>
+        <h1 className="text-3xl font-fraunces font-bold tracking-tight text-ink">
+          vahi<span className="text-terracotta">વટ</span>
+        </h1>
+        <p className="text-sm md:text-base font-medium text-slate-600 mt-2 text-center">
+          Where <span className="font-bold text-[#1E3A8A]">Big Buyers</span> Meet The <span className="font-bold text-[#EA580C]">Makers</span>
+        </p>
       </div>
 
       <div className="w-full max-w-md bg-white border border-slate-100 shadow-xl rounded-2xl p-8 mb-8 animate-in fade-in zoom-in-95 duration-500 delay-100 backdrop-blur-sm">
@@ -104,43 +107,75 @@ export function Login() {
         </form>
       </div>
 
-      <div className="w-full max-w-2xl animate-in fade-in slide-in-from-bottom-8 duration-500 delay-200">
+      <div className="w-full max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-500 delay-200">
         <div className="flex items-center justify-center gap-4 mb-6">
           <div className="h-px bg-border flex-1 max-w-[100px]"></div>
           <p className="text-center text-xs font-semibold uppercase tracking-widest text-charcoal">Demo Environments</p>
           <div className="h-px bg-border flex-1 max-w-[100px]"></div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <button
             onClick={() => handleQuickLogin("buyer")}
-            className="flex items-center text-left p-6 border border-slate-100 rounded-2xl bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-terracotta group relative overflow-hidden"
+            className="flex items-center text-left p-4 border border-slate-100 rounded-2xl bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-terracotta group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-8 h-8 rounded-bl-2xl bg-transparent group-hover:bg-terracotta/10 transition-colors duration-300 flex items-center justify-center">
-               <ShieldCheck className="h-4 w-4 text-terracotta opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ShieldCheck className="h-4 w-4 text-terracotta opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            <div className="h-14 w-14 rounded-full bg-terracotta/10 text-terracotta flex items-center justify-center shrink-0 mr-4 group-hover:scale-110 transition-transform duration-300">
-              <Building className="h-6 w-6" strokeWidth={1.5} />
+            <div className="h-12 w-12 rounded-full bg-terracotta/10 text-terracotta flex items-center justify-center shrink-0 mr-3 group-hover:scale-110 transition-transform duration-300">
+              <Building className="h-5 w-5" strokeWidth={1.5} />
             </div>
             <div>
-              <h3 className="font-bold font-fraunces text-ink">Acme Corp</h3>
-              <p className="text-sm text-charcoal mt-1">Enterprise Buyer Profile</p>
+              <h3 className="font-bold font-fraunces text-ink text-sm">Acme Corp</h3>
+              <p className="text-xs text-charcoal mt-0.5">Enterprise Buyer Profile</p>
             </div>
           </button>
 
           <button
             onClick={() => handleQuickLogin("vendor")}
-            className="flex items-center text-left p-6 border border-slate-100 rounded-2xl bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-terracotta group relative overflow-hidden"
+            className="flex items-center text-left p-4 border border-slate-100 rounded-2xl bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-terracotta group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-8 h-8 rounded-bl-2xl bg-transparent group-hover:bg-terracotta/10 transition-colors duration-300 flex items-center justify-center">
-               <ShieldCheck className="h-4 w-4 text-terracotta opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ShieldCheck className="h-4 w-4 text-terracotta opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            <div className="h-14 w-14 rounded-full bg-terracotta/10 text-terracotta flex items-center justify-center shrink-0 mr-4 group-hover:scale-110 transition-transform duration-300">
-              <Briefcase className="h-6 w-6" strokeWidth={1.5} />
+            <div className="h-12 w-12 rounded-full bg-terracotta/10 text-terracotta flex items-center justify-center shrink-0 mr-3 group-hover:scale-110 transition-transform duration-300">
+              <Briefcase className="h-5 w-5" strokeWidth={1.5} />
             </div>
             <div>
-              <h3 className="font-bold font-fraunces text-ink">TechNova Agency</h3>
-              <p className="text-sm text-charcoal mt-1">Service Vendor Profile</p>
+              <h3 className="font-bold font-fraunces text-ink text-sm">TechNova Agency</h3>
+              <p className="text-xs text-charcoal mt-0.5">Service Vendor Profile</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => handleQuickLogin("superadmin")}
+            className="flex items-center text-left p-4 border border-slate-100 rounded-2xl bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-terracotta group relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-8 h-8 rounded-bl-2xl bg-transparent group-hover:bg-terracotta/10 transition-colors duration-300 flex items-center justify-center">
+              <ShieldCheck className="h-4 w-4 text-terracotta opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+            <div className="h-12 w-12 rounded-full bg-terracotta/10 text-terracotta flex items-center justify-center shrink-0 mr-3 group-hover:scale-110 transition-transform duration-300">
+              <ShieldCheck className="h-5 w-5" strokeWidth={1.5} />
+            </div>
+            <div>
+              <h3 className="font-bold font-fraunces text-ink text-sm">Slok Rami</h3>
+              <p className="text-xs text-charcoal mt-0.5">Superadmin Profile</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => handleQuickLogin("admin")}
+            className="flex items-center text-left p-4 border border-slate-100 rounded-2xl bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-terracotta group relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-8 h-8 rounded-bl-2xl bg-transparent group-hover:bg-terracotta/10 transition-colors duration-300 flex items-center justify-center">
+              <ShieldCheck className="h-4 w-4 text-terracotta opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+            <div className="h-12 w-12 rounded-full bg-terracotta/10 text-terracotta flex items-center justify-center shrink-0 mr-3 group-hover:scale-110 transition-transform duration-300">
+              <Users className="h-5 w-5" strokeWidth={1.5} />
+            </div>
+            <div>
+              <h3 className="font-bold font-fraunces text-ink text-sm">Rahul Shah</h3>
+              <p className="text-xs text-charcoal mt-0.5">Partner (Group Admin)</p>
             </div>
           </button>
         </div>

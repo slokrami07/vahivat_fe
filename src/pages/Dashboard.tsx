@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { usePerspective } from "@/context/PerspectiveContext"
 import { ProfileCompletionBar } from "@/components/ProfileCompletionBar"
@@ -7,10 +8,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowUpRight, Clock, Users, Activity, CheckCircle2 } from "lucide-react"
+import { ROLES } from "@/lib/roles"
 
 export function Dashboard() {
-  const { perspective, profile, vendorStatus, setVendorStatus } = usePerspective()
+  const { perspective, role, profile, vendorStatus, setVendorStatus } = usePerspective()
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    if (role === ROLES.SUPERADMIN) {
+      navigate('/superadmin', { replace: true })
+    } else if (role === ROLES.GROUP_ADMIN) {
+      navigate('/admin', { replace: true })
+    }
+  }, [role, navigate])
 
   if (perspective === "buyer") {
     return (

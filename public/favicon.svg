@@ -1,4 +1,5 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M2 4L12 28L18 16L12 4H2Z" fill="#6D28D9" opacity="0.9"/>
-  <path d="M30 4L16 28L10 16L18 4H30Z" fill="#8B5CF6"/>
+<svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="32" cy="32" r="30" fill="white" stroke="#f1f5f9" stroke-width="1.5" />
+  <path d="M16 26 C18 33 20 40 25 40 C30 40 38 21 42 16 C38 21 30 43 25 43 C20 43 17 34 16 26 Z" fill="#1B2A4A" />
+  <text x="35" y="42" font-family="'Fraunces', 'Shruti', 'Noto Sans Gujarati', serif" font-weight="bold" font-size="22" fill="#C75D3A">વટ</text>
 </svg>
