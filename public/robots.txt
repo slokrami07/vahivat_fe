@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /app/
+Disallow: /superadmin/
+Disallow: /admin/
+Disallow: /onboarding/
+
+Sitemap: https://vahivat.in/sitemap.xml

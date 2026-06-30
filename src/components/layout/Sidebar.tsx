@@ -12,19 +12,19 @@ export function Sidebar() {
   const navigate = useNavigate()
 
   const buyerNavItems = [
-    { name: t('nav.dashboard'), path: "/", icon: LayoutDashboard },
-    { name: t('nav.discovery_hub'), path: "/hub", icon: Compass },
-    { name: t('nav.active_rfps'), path: "/rfps", icon: FileText },
-    { name: t('nav.calendar'), path: "/calendar", icon: CalendarDays },
-    { name: t('nav.chat'), path: "/chat", icon: MessageSquare },
+    { name: t('nav.dashboard'), path: "/app", icon: LayoutDashboard },
+    { name: t('nav.discovery_hub'), path: "/app/hub", icon: Compass },
+    { name: t('nav.active_rfps'), path: "/app/rfps", icon: FileText },
+    { name: t('nav.calendar'), path: "/app/calendar", icon: CalendarDays },
+    { name: t('nav.chat'), path: "/app/chat", icon: MessageSquare },
   ]
 
   const vendorNavItems = [
-    { name: t('nav.dashboard'), path: "/", icon: LayoutDashboard },
-    { name: t('nav.scan_opportunities'), path: "/hub", icon: Compass },
-    { name: t('nav.active_proposals'), path: "/rfps", icon: FileText },
-    { name: t('nav.calendar'), path: "/calendar", icon: CalendarDays },
-    { name: t('nav.chat'), path: "/chat", icon: MessageSquare },
+    { name: t('nav.dashboard'), path: "/app", icon: LayoutDashboard },
+    { name: t('nav.scan_opportunities'), path: "/app/hub", icon: Compass },
+    { name: t('nav.active_proposals'), path: "/app/rfps", icon: FileText },
+    { name: t('nav.calendar'), path: "/app/calendar", icon: CalendarDays },
+    { name: t('nav.chat'), path: "/app/chat", icon: MessageSquare },
   ]
 
   const navItems = perspective === "buyer" ? buyerNavItems : vendorNavItems
@@ -32,7 +32,7 @@ export function Sidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-40 w-64 border-r border-slate-100 bg-white shadow-sm hidden lg:block transition-colors duration-200">
       <div className="flex h-16 items-center border-b px-6">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/app")}>
           <span className="font-fraunces text-2xl font-semibold tracking-tight text-ink">
             vahi<span className="text-terracotta">વટ</span>
           </span>
@@ -44,7 +44,7 @@ export function Sidebar() {
           <div className="mb-4">
             <Button 
               className="w-full justify-start gap-2 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5" 
-              onClick={() => navigate('/create-rfp')}
+              onClick={() => navigate('/app/create-rfp')}
             >
               <PlusCircle className="h-5 w-5" />
               {t('nav.create_requirement')}

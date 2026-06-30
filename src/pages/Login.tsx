@@ -1,15 +1,46 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams, useNavigate } from "react-router-dom"
 import { usePerspective } from "@/context/PerspectiveContext"
 import { Input } from "@/components/ui/input"
-import { Building, Briefcase, Eye, EyeOff, ShieldCheck, Users } from "lucide-react"
+import { Building, Briefcase, Eye, EyeOff, ShieldCheck, Users, ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function Login() {
-  const { login } = usePerspective()
+  const { login, isAuthenticated, role } = usePerspective()
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const type = searchParams.get('type')
+  const plan = searchParams.get('plan')
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
+
+  // Pre-fill email based on URL type param
+  useEffect(() => {
+    if (type === 'buyer' && !email) {
+      setEmail("buyer@acmecorp.com")
+    } else if (type === 'vendor' && !email) {
+      setEmail("vendor@technova.com")
+    }
+  }, [type])
+
+  // Redirect after authentication
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (plan) {
+        localStorage.setItem('pending_plan', plan)
+      }
+      if (role === 'superadmin') {
+        navigate('/superadmin', { replace: true })
+      } else if (role === 'group_admin') {
+        navigate('/admin', { replace: true })
+      } else {
+        navigate('/app', { replace: true })
+      }
+    }
+  }, [isAuthenticated, role, plan, navigate])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -20,20 +51,20 @@ export function Login() {
     }
   }
 
-  const handleQuickLogin = (type: "buyer" | "vendor" | "superadmin" | "admin") => {
-    if (type === "buyer") {
+  const handleQuickLogin = (loginType: "buyer" | "vendor" | "superadmin" | "admin") => {
+    if (loginType === "buyer") {
       setEmail("buyer@acmecorp.com")
       setPassword("demo123")
       login("buyer@acmecorp.com")
-    } else if (type === "vendor") {
+    } else if (loginType === "vendor") {
       setEmail("vendor@technova.com")
       setPassword("demo123")
       login("vendor@technova.com")
-    } else if (type === "superadmin") {
+    } else if (loginType === "superadmin") {
       setEmail("superadmin@vahiવટ.com")
       setPassword("demo123")
       login("superadmin@vahiવટ.com")
-    } else if (type === "admin") {
+    } else if (loginType === "admin") {
       setEmail("admin@vahiવટ.com")
       setPassword("demo123")
       login("admin@vahiવટ.com")
@@ -105,6 +136,16 @@ export function Login() {
             Sign in securely
           </button>
         </form>
+
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => navigate('/')}
+            className="text-sm text-charcoal hover:text-ink transition-colors inline-flex items-center gap-1.5 inline-action"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to home
+          </button>
+        </div>
       </div>
 
       <div className="w-full max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-500 delay-200">

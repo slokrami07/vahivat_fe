@@ -182,7 +182,7 @@ export function Header() {
                 <button 
                   onClick={() => {
                     setIsProfileOpen(false)
-                    navigate('/settings')
+                    navigate('/app/settings')
                   }}
                   className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none text-charcoal hover:bg-cream hover:text-ink transition-colors min-h-[36px]"
                 >
@@ -192,7 +192,7 @@ export function Header() {
                 <button 
                   onClick={() => {
                     setIsProfileOpen(false)
-                    navigate('/settings?tab=preferences')
+                    navigate('/app/settings?tab=preferences')
                   }}
                   className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none text-charcoal hover:bg-cream hover:text-ink transition-colors min-h-[36px]"
                 >

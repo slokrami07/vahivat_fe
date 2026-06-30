@@ -4,13 +4,123 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="vahiવટ — B2B vendor discovery and management marketplace for Gujarat, India. Find verified vendors, manage deals, and grow your business." />
     <meta name="theme-color" content="#1d4ed8" />
     <link rel="manifest" href="/manifest.json" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+Gujarati:wght@400;500;600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
-    <title>vahiવટ — B2B Marketplace</title>
+
+    <!-- Primary SEO -->
+    <title>Vahivat — Gujarat's Verified B2B Vendor Marketplace | Find GST-Verified Suppliers</title>
+    <meta name="description" content="Vahivat is Gujarat's #1 B2B marketplace to find GST-verified vendors, send RFQs in Gujarati, compare supplier quotes, and close deals — all in one platform. Trusted by 200+ businesses in Ahmedabad, Surat, Rajkot, and Vadodara." />
+    <meta name="keywords" content="B2B marketplace India, verified vendor Gujarat, GST verified supplier, find supplier Ahmedabad, B2B platform Gujarat, vendor discovery India, supplier marketplace Gujarat, RFQ platform India, IT vendor Ahmedabad, procurement platform India, B2B ecommerce India, verified supplier India, MSME marketplace Gujarat, business vendor Gujarat, find IT vendor Gujarat" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Vahivat" />
+    <link rel="canonical" href="https://vahivat.in/" />
+
+    <!-- Open Graph (WhatsApp, LinkedIn sharing) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vahivat.in/" />
+    <meta property="og:title" content="Vahivat — Gujarat's Verified B2B Vendor Marketplace" />
+    <meta property="og:description" content="Find GST-verified suppliers, send RFQs in Gujarati, compare quotes, and close deals. Gujarat's first verified B2B marketplace for IT, Textile, Pharma, and more." />
+    <meta property="og:image" content="https://vahivat.in/og-image.png" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:locale:alternate" content="gu_IN" />
+    <meta property="og:site_name" content="Vahivat" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Vahivat — Gujarat's Verified B2B Vendor Marketplace" />
+    <meta name="twitter:description" content="Find GST-verified suppliers in Gujarat. Send RFQs, compare quotes, close deals. All in one platform." />
+    <meta name="twitter:image" content="https://vahivat.in/og-image.png" />
+
+    <!-- Structured Data — Organization Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Vahivat",
+      "url": "https://vahivat.in",
+      "logo": "https://vahivat.in/logo.png",
+      "description": "Gujarat's first verified B2B vendor marketplace connecting buyers with GST-verified suppliers across IT, Textile, Pharma, and Manufacturing sectors.",
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Ahmedabad, Gujarat, India"
+      },
+      "areaServed": ["Ahmedabad", "Surat", "Rajkot", "Vadodara", "Gujarat", "India"],
+      "sameAs": []
+    }
+    </script>
+
+    <!-- Structured Data — WebSite + Sitelinks SearchBox -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Vahivat",
+      "url": "https://vahivat.in",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://vahivat.in/app/hub?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Structured Data — FAQ Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Vahivat only for IT vendors in Gujarat?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Right now, yes — we've launched with IT because that's where we could build the deepest, most verified marketplace first. Textile, Pharma, Construction, FMCG, and Manufacturing are all coming."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I know a vendor's GST registration is actually verified?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every vendor on Vahivat goes through automatic GSTIN verification before their listing goes live. We check directly against the government GST database — not just what the vendor tells us."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between Vahivat and IndiaMART?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "IndiaMART is a large national directory — vendors aren't automatically verified, leads are shared with competitors, and there's no real-time deal tracking. Vahivat is built specifically for Gujarat, every vendor is GST-verified, and the entire procurement journey happens in one place."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it free for buyers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Completely. Buyers browse verified vendors, send RFQs, compare quotes, and manage deals — all for free, forever."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What cities in Gujarat does Vahivat cover?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We're active in Ahmedabad, Surat, Rajkot, and Vadodara right now. Any verified business in Gujarat can sign up."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Preconnect fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+Gujarati:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>

@@ -128,7 +128,7 @@ export function GroupAdminLayout() {
             </div>
           )}
           <button
-            onClick={() => { logout(); navigate('/'); }}
+            onClick={() => { logout(); navigate('/login'); }}
             className={cn(
               'flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-colors',
               collapsed && 'justify-center px-2',
@@ -153,7 +153,7 @@ export function GroupAdminLayout() {
 
           <div className="ml-auto flex items-center gap-3">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/app')}
               className="text-xs text-slate-500 hover:text-ink font-medium px-3 py-1.5 rounded-lg border border-slate-100 hover:bg-cream transition-colors"
             >
               Exit Partner Portal
